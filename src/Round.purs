@@ -1,17 +1,17 @@
 module Round where
 
 import Prelude
-import Types (Round(..), scoreRound)
 
-import Data.Array (concat, length, zip, (..))
+import Data.Array (concat, length, snoc, zip, (..))
+import Data.Lens.Index (ix)
+import Data.Lens.Setter (over)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Data.Lens.Index (ix)
-import Data.Lens.Setter (over)
+import Types (Round(..), scoreRound)
 
 type State = Round
 
@@ -32,13 +32,12 @@ round r =
         render :: State -> H.ComponentHTML Query
         render (Round r) = HH.div
             [HP.classes [HH.ClassName "row"]]
-            $ concat 
-                [ map toss (zip (0..length r.results) r.results)
-                , [ HH.div 
-                        [HP.classes [HH.ClassName "column"]]
-                        [HH.text $ show $ scoreRound (Round r)]
-                    ]
-                ] 
+            (snoc tossCols scoreCol)  
+            where 
+                tossCols = map toss (zip (0..length r.results) r.results)
+                scoreCol = HH.div 
+                    [HP.classes [HH.ClassName "column"]]
+                    [HH.text $ show $ scoreRound (Round r)]
 
         toss (Tuple i b) = HH.div
             [HP.classes [HH.ClassName "column"]]
@@ -58,16 +57,3 @@ round r =
             H.put newRound
             H.raise $ RoundChange newRound
             pure next
-        
-
-
-
-
-
-
-
-
-
-
-
-

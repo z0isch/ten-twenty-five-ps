@@ -30,18 +30,16 @@ game =  H.parentComponent
   where
     render :: State -> H.ParentHTML Query Round.Query Slot m 
     render state = HH.div
-      [ HP.classes [HH.ClassName "ui container"]
-      ]
+      [ HP.classes [HH.ClassName "ui container"]]
       [ HH.div
-        [ HP.classes [HH.ClassName "ui seven column grid"]
-        ]
-        $ snoc roundRows totalRow 
+        [ HP.classes [HH.ClassName "ui seven column grid"]]
+        (snoc roundRows totalRow)
       ]
       where 
         roundRows = map roundSlot $ zip (0..length state) state
         roundSlot (Tuple i r) = HH.slot i (Round.round r) unit (HE.input $ HandleRound i)
         totalRow = HH.div 
-          [HP.classes [HH.ClassName "row"]] 
+          [ HP.classes [HH.ClassName "row"]] 
           [ HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] []
           , HH.div [HP.classes [HH.ClassName "column"]] [HH.text $ show $ scoreGame state]
           ]
@@ -51,8 +49,3 @@ game =  H.parentComponent
       state <- H.get
       H.put $ set (ix i) r state
       pure next
-
-
-
-
-
