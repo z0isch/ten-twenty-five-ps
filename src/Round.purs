@@ -2,7 +2,7 @@ module Round where
 
 import Prelude
 
-import Data.Array (concat, length, snoc, zip, (..))
+import Data.Array (concat, length, snoc, zip, (..), (:))
 import Data.Lens.Index (ix)
 import Data.Lens.Setter (over)
 import Data.Maybe (Maybe(..))
@@ -32,20 +32,22 @@ round r =
         render :: State -> H.ComponentHTML Query
         render (Round r) = HH.div
             [HP.classes [HH.ClassName "row"]]
-            (snoc tossCols scoreCol)  
-            where 
+            (distanceCol:snoc tossCols scoreCol)  
+            where
+                distanceCol = HH.div 
+                    [HP.classes [HH.ClassName "column"]] 
+                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ (show r.distance) <> "'"]]
                 tossCols = map toss (zip (0..length r.results) r.results)
                 scoreCol = HH.div 
-                    [HP.classes [HH.ClassName "column"]]
-                    [HH.text $ show $ scoreRound (Round r)]
-
+                    [HP.classes [HH.ClassName "column"]] 
+                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound (Round r)]]
         toss (Tuple i b) = HH.div
-            [HP.classes [HH.ClassName "column"]]
+            [ HP.classes [HH.ClassName "column"]]
             [ HH.input 
                 [ HP.type_ HP.InputCheckbox
                 , HP.checked b
                 , HE.onChecked $ HE.input_ $ Toggle i
-                , HP.classes [HH.ClassName "ui checkbox"]
+                , HP.classes [HH.ClassName "ui checkbox round"]
                 ]
             ]
 

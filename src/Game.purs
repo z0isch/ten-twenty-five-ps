@@ -2,7 +2,7 @@ module Game where
   
 import Prelude
 
-import Data.Array (concat, length, snoc, zip, (..))
+import Data.Array (length, replicate, snoc, zip, (..))
 import Data.Lens.Index (ix)
 import Data.Lens.Setter (set)
 import Data.Maybe (Maybe(..))
@@ -32,18 +32,23 @@ game =  H.parentComponent
     render state = HH.div
       [ HP.classes [HH.ClassName "ui container"]]
       [ HH.div
-        [ HP.classes [HH.ClassName "ui seven column grid"]]
-        (snoc roundRows totalRow)
+        [ HP.classes [HH.ClassName "ui eight column grid"]]
+        $ snoc (snoc roundRows divider) totalRow
       ]
       where 
         roundRows = map roundSlot $ zip (0..length state) state
         roundSlot (Tuple i r) = HH.slot i (Round.round r) unit (HE.input $ HandleRound i)
         totalRow = HH.div 
           [ HP.classes [HH.ClassName "row"]] 
-          [ HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] [], HH.div [HP.classes [HH.ClassName "column"]] []
-          , HH.div [HP.classes [HH.ClassName "column"]] [HH.text $ show $ scoreGame state]
+          $ snoc (replicate 7 blankCol) totalScore
+        blankCol = HH.div [HP.classes [HH.ClassName "column"]] []
+        divider = HH.div [HP.classes [HH.ClassName "ui divider"]] []
+        totalScore = HH.div 
+          [HP.classes [HH.ClassName "column"]] 
+          [HH.h1
+            [HP.classes [HH.ClassName "stat"]] 
+            [HH.text $ show (scoreGame state)]
           ]
-
     eval :: Query ~> H.ParentDSL State Query Round.Query Slot Void m
     eval (HandleRound i (Round.RoundChange r) next) = do
       state <- H.get
