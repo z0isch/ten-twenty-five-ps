@@ -1,8 +1,8 @@
 module Types where
 
-import Data.Array
 import Prelude
 
+import Data.Array (head, last, replicate)
 import Data.Foldable (and, sum)
 import Data.Generic (class Generic, gShow)
 import Data.Maybe (fromMaybe)
@@ -16,12 +16,12 @@ type Game = Array Round
 
 initialGame :: Game
 initialGame = [
-    Round { results: [false,false,false,false,false,false], distance: 10},
-    Round { results: [false,false,false,false,false,false], distance: 15},
-    Round { results: [false,false,false,false,false,false], distance: 20},
-    Round { results: [false,false,false,false,false,false], distance: 25},
-    Round { results: [false,false,false,false,false,false], distance: 30},
-    Round { results: [false,false,false,false,false,false], distance: 35}
+    Round { results: replicate 6 false, distance: 10},
+    Round { results: replicate 6 false, distance: 15},
+    Round { results: replicate 6 false, distance: 20},
+    Round { results: replicate 6 false, distance: 25},
+    Round { results: replicate 6 false, distance: 30},
+    Round { results: replicate 6 false, distance: 35}
 ]
 
 scoreGame :: Game -> Int
