@@ -1,16 +1,19 @@
 {
   "name": "ten-twenty-five",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "output"
-  ],
+  "ignore": ["**/.*", "node_modules", "bower_components", "output"],
   "dependencies": {
-    "purescript-prelude": "^3.1.0",
+    "purescript-prelude": "^3.0.0",
     "purescript-console": "^3.0.0",
     "purescript-halogen": "*",
-    "purescript-lens": "*"
+    "purescript-routing": "*",
+    "purescript-lens": "*",
+    "purescript-datetime": "*",
+    "purescript-now": "*",
+    "purescript-argonaut-codecs": "*",
+    "purescript-argonaut-core": "*",
+    "purescript-argonaut-generic": "*",
+    "purescript-var": "*",
+    "purescript-aff-coroutines": "*"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"

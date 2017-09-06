@@ -20,8 +20,8 @@ data Query a = HandleRound Slot Round.Message a
 
 type Slot = Int
 
-game :: forall m.  H.Component HH.HTML Query Unit Void m
-game =  H.parentComponent
+ui :: forall m.  H.Component HH.HTML Query Unit Void m
+ui =  H.parentComponent
     { initialState: const initialGame
     , render
     , eval

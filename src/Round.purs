@@ -2,7 +2,7 @@ module Round where
 
 import Prelude
 
-import Data.Array (concat, length, snoc, zip, (..), (:))
+import Data.Array (length, snoc, zip, (..), (:))
 import Data.Lens.Index (ix)
 import Data.Lens.Setter (over)
 import Data.Maybe (Maybe(..))
@@ -30,17 +30,17 @@ round r =
         }
     where
         render :: State -> H.ComponentHTML Query
-        render (Round r) = HH.div
+        render (Round r') = HH.div
             [HP.classes [HH.ClassName "row"]]
             (distanceCol:snoc tossCols scoreCol)  
             where
                 distanceCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ (show r.distance) <> "'"]]
-                tossCols = map toss (zip (0..length r.results) r.results)
+                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ (show r'.distance) <> "'"]]
+                tossCols = map toss (zip (0..length r'.results) r'.results)
                 scoreCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound (Round r)]]
+                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound (Round r')]]
         toss (Tuple i b) = HH.div
             [ HP.classes [HH.ClassName "column"]]
             [ HH.input 
@@ -53,9 +53,9 @@ round r =
 
         eval :: Query ~> H.ComponentDSL State Query Message m
         eval (Toggle i next) = do
-            (Round r) <- H.get
-            let newResults = over (ix i) not r.results
-            let newRound = Round {results:newResults, distance: r.distance}
+            (Round r') <- H.get
+            let newResults = over (ix i) not r'.results
+            let newRound = Round {results:newResults, distance: r'.distance}
             H.put newRound
             H.raise $ RoundChange newRound
             pure next
