@@ -22,12 +22,11 @@ main = runHalogenAff do
   body <- awaitBody
   app <- runUI P.ui unit body
   _ <- forkAff $ runProcess (R.routeProducer $$ P.routeConsumer app.query)
-  app.subscribe pageConsumer
+  app.subscribe pageMsgConsumer
 
-pageConsumer :: forall eff. Consumer P.Message (Aff (avar :: AVAR, dom :: DOM | eff)) Unit
-pageConsumer = consumer \event -> do
+pageMsgConsumer :: forall eff. Consumer P.Message (Aff (avar :: AVAR, dom :: DOM | eff)) Unit
+pageMsgConsumer = consumer \event -> do
   case event of
     RouteTo s -> do
       liftEff $ setHash s
       pure Nothing
-

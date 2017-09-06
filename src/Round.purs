@@ -11,7 +11,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import GameTypes (Round(..), scoreRound)
+import TenTwentyFive.Types (Round(..), scoreRound)
 
 type State = Round
 

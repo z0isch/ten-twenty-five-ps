@@ -1,8 +1,8 @@
-module GameTypes where
+module TenTwentyFive.Types where
 
 import Prelude
 
-import Data.Argonaut.Decode (class DecodeJson, decodeJson)
+import Data.Argonaut.Decode (class DecodeJson)
 import Data.Argonaut.Decode.Generic (gDecodeJson)
 import Data.Argonaut.Encode (class EncodeJson)
 import Data.Argonaut.Encode.Generic (gEncodeJson)

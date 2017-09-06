@@ -12,8 +12,8 @@ import Data.Lens.Index (ix)
 import Data.Lens.Setter (set)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
-import GameSave (saveGame)
-import GameTypes (Game, GameSave(..), initialGame, scoreGame)
+import DOM.WebStorage.Game (saveGame)
+import TenTwentyFive.Types (Game, GameSave(..), initialGame, scoreGame)
 import Halogen (liftEff)
 import Halogen as H
 import Halogen.HTML as HH

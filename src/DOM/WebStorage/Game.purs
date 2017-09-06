@@ -1,4 +1,4 @@
-module GameSave where
+module DOM.WebStorage.Game where
 
 import Prelude
 
@@ -13,7 +13,7 @@ import Data.Argonaut.Parser (jsonParser)
 import Data.Array ((:))
 import Data.Either (either)
 import Data.Maybe (maybe)
-import GameTypes (GameSave)
+import TenTwentyFive.Types (GameSave)
 
 clearSavedGames :: forall e. Storage -> Eff ( dom :: DOM | e) Unit
 clearSavedGames ls = setItem "savedGames" "" ls
