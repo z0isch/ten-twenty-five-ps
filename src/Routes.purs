@@ -16,6 +16,7 @@ import Routing.Match.Class (lit)
 data Routes 
   = Home
   | PlayGame
+  | History
 derive instance genericRoutes :: Generic Routes
 instance showRoutes :: Show Routes where
   show = gShow
@@ -26,12 +27,16 @@ homeSlash = lit ""
 playGame :: Match Routes
 playGame = PlayGame <$ (homeSlash *> lit "playGame")
 
+history :: Match Routes
+history = History <$ (homeSlash *> lit "history")
+
 home :: Match Routes
 home = Home <$ homeSlash
 
 routing :: Match Routes
 routing = 
   playGame <|>
+  history <|>
   home
 
 routeProducer :: forall eff. Producer Routes (Aff (avar :: AVAR | eff)) Unit

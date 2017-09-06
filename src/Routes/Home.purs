@@ -30,6 +30,10 @@ ui =  H.component
           [ HP.classes [HH.ClassName "ui primary button"]
           , HP.href "#/playGame"
           ]  [HH.text "New Game"]
+        , HH.a 
+          [ HP.classes [HH.ClassName "ui green button"]
+          , HP.href "#/history"
+          ]  [HH.text "Stats"]
         ]
       eval :: Query ~> H.ComponentDSL State Query Message m
       eval (Nonsense next) = pure next

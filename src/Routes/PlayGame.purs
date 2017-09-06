@@ -83,9 +83,8 @@ ui =  H.parentComponent
     eval (Save next) = do
         state <- H.get
         d <- liftEff nowDateTime
-        ls <- liftEff $ window >>= localStorage
         let gs = GameSave {playedOn:d, game:initialGame}
-        liftEff $ saveGame ls gs
+        liftEff $ saveGame gs
         H.raise $ GameSaved gs
         pure next
 
