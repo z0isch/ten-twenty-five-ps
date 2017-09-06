@@ -11,7 +11,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Types (Round(..), scoreRound)
+import GameTypes (Round(..), scoreRound)
 
 type State = Round
 
@@ -20,8 +20,10 @@ data Query a
 
 data Message = RoundChange Round
 
-round :: forall m. Round -> H.Component HH.HTML Query Unit Message m
-round r =
+type Input = Unit
+
+ui :: forall m. Round -> H.Component HH.HTML Query Input Message m
+ui r =
     H.component
         { initialState: const r
         , render
