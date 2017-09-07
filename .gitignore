@@ -1,8 +1,49 @@
 /bower_components/
-/node_modules/
+node_modules/
 /.pulp-cache/
 /output/
 /generated-docs/
 /.psc*
 /.purs*
 /.psa*
+
+# Mac
+.DS_Store
+
+# iOS
+/TenTwentyFive/platforms/ios/build/
+/TenTwentyFive/platforms/ios/www/
+/TenTwentyFive/platforms/ios/cordova/console.log
+*.xcuserdatad
+
+# android
+/TenTwentyFive/platforms/android/assets/wwwA
+/TenTwentyFive//TenTwentyFive/platforms/android/assets/www
+/TenTwentyFive/platforms/android/bin
+/TenTwentyFive/platforms/android/gen
+/TenTwentyFive/platforms/android/local.properties
+/TenTwentyFive/platforms/android/ant-build
+/TenTwentyFive/platforms/android/ant-gen
+/TenTwentyFive/platforms/android/CordovaLib/ant-build
+/TenTwentyFive/platforms/android/CordovaLib/ant-gen
+/TenTwentyFive/platforms/android/CordovaLib/bin
+/TenTwentyFive/platforms/android/CordovaLib/gen
+/TenTwentyFive/platforms/android/CordovaLib/local.properties
+/TenTwentyFive/platforms/android/gradlew.bat
+/TenTwentyFive/platforms/android/build
+/TenTwentyFive/platforms/android/gradle
+/TenTwentyFive/platforms/android/libs
+/TenTwentyFive/platforms/android/gradlew.bat
+/TenTwentyFive/platforms/android/CordovaLib/build
+/TenTwentyFive/platforms/android/.gradle
+
+# wp8
+/TenTwentyFive/platforms/wp8/bin
+/TenTwentyFive/platforms/wp8/obj
+/TenTwentyFive/platforms/wp8/www
+/TenTwentyFive/platforms/wp8/.staging
+/TenTwentyFive/platforms/wp8/*.suo
+/TenTwentyFive/platforms/wp8/*.csproj.user
+
+# res
+/TenTwentyFive/resources/signing

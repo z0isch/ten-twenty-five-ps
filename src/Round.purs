@@ -38,11 +38,11 @@ ui r =
             where
                 distanceCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ (show r'.distance) <> "'"]]
+                    [HH.h2 [HP.classes [HH.ClassName "stat"]] [HH.text $ (show r'.distance) <> "'"]]
                 tossCols = map toss (zip (0..length r'.results) r'.results)
                 scoreCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound r']]
+                    [HH.h2 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound r']]
         toss (Tuple i b) = HH.div
             [ HP.classes [HH.ClassName "column"]]
             [ HH.input 
@@ -52,7 +52,6 @@ ui r =
                 , HP.classes [HH.ClassName "ui checkbox round"]
                 ]
             ]
-
         eval :: Query ~> H.ComponentDSL State Query Message m
         eval (Toggle i next) = do
             r' <- H.get

@@ -45,6 +45,7 @@ ui =  H.component
           , stat "small" (show $ length gs) "Games Played"
           , stat "small" (show $ averageScore gs) "Avg Score"
           , stat "small" (show $ highestScore gs) "Highest Score"
+          , HH.div [HP.classes [HH.ClassName "ui divider"]] []
           , HH.div_ $ map (\{distance:d, average:a} -> stat "tiny" (percent a) (show d <> "'") ) $ averageRoundPercents gs
           , HH.button
               [ HP.classes [HH.ClassName "ui red fluid button"]

@@ -50,23 +50,17 @@ ui =  H.parentComponent
             [HH.text "New Game"] 
           , HH.div
             [ HP.classes [HH.ClassName "ui eight column grid"]]
-            $ snoc (snoc (snoc roundRows divider) totalRow) buttonRow
+            $ snoc (snoc (snoc roundRows divider) totalScore) buttonRow
           ]
         ]
       where 
         roundRows = map roundSlot $ zip (0..length state) state
         roundSlot (Tuple i r) = HH.slot i (Round.ui r) unit (HE.input $ HandleRound i)
-        totalRow = HH.div 
-          [ HP.classes [HH.ClassName "row"]] 
-          $ snoc (replicate 7 blankCol) totalScore
         blankCol = HH.div [HP.classes [HH.ClassName "column"]] []
         divider = HH.div [HP.classes [HH.ClassName "ui divider"]] []
-        totalScore = HH.div 
-          [HP.classes [HH.ClassName "column"]] 
-          [HH.h1
-            [HP.classes [HH.ClassName "stat"]] 
-            [HH.text $ show (scoreGame state)]
-          ]
+        totalScore = HH.h1
+          [ HP.classes [HH.ClassName "ui row centered header"] ]
+          [HH.text $ show (scoreGame state)]
         buttonRow = HH.div
           [ HP.classes [HH.ClassName "row"]]
           [ HH.button
