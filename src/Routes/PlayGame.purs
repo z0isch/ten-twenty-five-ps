@@ -5,8 +5,6 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Now (NOW, nowDateTime)
 import DOM (DOM)
-import DOM.HTML (window)
-import DOM.HTML.Window (localStorage)
 import Data.Array (length, replicate, snoc, zip, (..))
 import Data.Lens.Index (ix)
 import Data.Lens.Setter (set)
@@ -65,12 +63,12 @@ ui =  H.parentComponent
         buttonRow = HH.div
           [ HP.classes [HH.ClassName "row"]]
           [ HH.button
-            [ HP.classes [HH.ClassName "ui primary huge button"]
+            [ HP.classes [HH.ClassName "ui primary fluid button"]
             , HE.onClick (HE.input_ Save)
             ]
             [ HH.text "Save"]
           , HH.a 
-            [ HP.classes [HH.ClassName "ui huge button"]
+            [ HP.classes [HH.ClassName "ui red fluid button"]
             , HP.href "#"
             ]  [HH.text "Cancel"]
           ]
@@ -87,11 +85,3 @@ ui =  H.parentComponent
         liftEff $ saveGame gs
         H.raise $ GameSaved gs
         pure next
-
-
-
-
-
-
-
-

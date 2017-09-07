@@ -5,25 +5,23 @@ import Prelude
 import Control.Coroutine (Consumer, consumer)
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Now (NOW)
 import DOM (DOM)
-import DOM.HTML (window)
-import DOM.HTML.Window (localStorage)
-import Data.Either.Nested (Either3)
-import Data.Functor.Coproduct.Nested (Coproduct3)
+import Data.Either.Nested (Either4)
+import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Maybe (Maybe(..))
-import Halogen (liftEff, modify)
+import Halogen (modify)
 import Halogen as H
-import Halogen.Component.ChildPath (cp1, cp2, cp3)
+import Halogen.Component.ChildPath (cp1, cp2, cp3, cp4)
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Routes (Routes(..))
-import Routes.History as History
+import Routes.About as About
+import Routes.Stats as Stats
 import Routes.Home as Home
 import Routes.PlayGame as PlayGame
-import TenTwentyFive.Types (GameSave(..))
+import TenTwentyFive.Types (GameSave)
 
 type State = {currentPage :: Routes, history :: Array GameSave}
 
@@ -36,9 +34,9 @@ type Input = Unit
 
 data Message = RouteTo String
 
-type ChildQuery = Coproduct3 Home.Query PlayGame.Query History.Query
+type ChildQuery = Coproduct4 Home.Query PlayGame.Query Stats.Query About.Query
 
-type ChildSlot = Either3 Unit Unit Unit
+type ChildSlot = Either4 Unit Unit Unit Unit
 
 ui :: forall e. H.Component HH.HTML Query Input Message (Aff (now :: NOW , dom :: DOM | e))
 ui = H.parentComponent 
@@ -55,15 +53,18 @@ ui = H.parentComponent
     render {currentPage:PlayGame} = HH.div_
       [ HH.slot' cp2 unit PlayGame.ui unit (HE.input HandlePlayGame)
       ]
-    render {currentPage:History, history: games} = HH.div_
-        [ HH.slot' cp3 unit History.ui games absurd
+    render {currentPage:Stats, history: games} = HH.div_
+        [ HH.slot' cp3 unit Stats.ui games absurd
+        ]
+    render {currentPage:About} = HH.div_
+        [ HH.slot' cp4 unit About.ui unit absurd
         ]
     eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Message (Aff (now :: NOW, dom :: DOM | e))
     eval (Goto a next) = do
       modify (_{ currentPage = a })
       pure next
     eval (HandlePlayGame (PlayGame.GameSaved _) next) = do
-      H.raise $ RouteTo "/history"
+      H.raise $ RouteTo "/stats"
       pure next
     eval (SetHistory h next) = do
       modify (_{ history = h })
@@ -80,21 +81,3 @@ savedGamesConsumer :: forall a eff. (Query Unit -> Aff (avar :: AVAR | eff) a)
 savedGamesConsumer q = consumer \games -> do 
     _ <- q $ H.action $ SetHistory games
     pure Nothing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

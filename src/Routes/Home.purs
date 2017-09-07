@@ -26,14 +26,21 @@ ui =  H.component
     where
       render :: State -> H.ComponentHTML Query
       render _ =  HH.div_ 
-        [ HH.a 
-          [ HP.classes [HH.ClassName "ui primary button"]
-          , HP.href "#/playGame"
-          ]  [HH.text "New Game"]
+        [ HH.h1
+          [ HP.classes [HH.ClassName "ui centered header"] ]
+          [ HH.text "1025"]
         , HH.a 
-          [ HP.classes [HH.ClassName "ui green button"]
-          , HP.href "#/history"
-          ]  [HH.text "Stats"]
+            [ HP.classes [HH.ClassName "ui primary fluid button"]
+            , HP.href "#/playGame"
+            ]  [HH.text "New Game"]
+        , HH.a 
+            [ HP.classes [HH.ClassName "ui green fluid button"]
+            , HP.href "#/stats"
+            ]  [HH.text "Stats"]
+        , HH.a 
+            [ HP.classes [HH.ClassName "ui violet fluid button"]
+            , HP.href "#/about"
+            ]  [HH.text "About"]
         ]
       eval :: Query ~> H.ComponentDSL State Query Message m
       eval (Nonsense next) = pure next
