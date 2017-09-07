@@ -35,12 +35,17 @@ ui =  H.component
       render :: State -> H.ComponentHTML Query
       render gs = HH.div_
         [ homeButton
-        , HH.h1_ [HH.text "Stats"]
-        , HH.text $ show $ length gs
-        , HH.button
-            [ HP.classes [HH.ClassName "ui red fluid button"]
-            , HE.onClick $ HE.input_ $ ClearSavedGames
-            ]  [HH.text "Delete Stats"]
+        , HH.div
+          [ HP.classes [HH.ClassName "ui container"]]
+          [ HH.h1
+            [ HP.classes [HH.ClassName "ui centered header"] ]
+            [HH.text "Stats"]
+          , HH.text $ show $ length gs
+          , HH.button
+              [ HP.classes [HH.ClassName "ui red fluid button"]
+              , HE.onClick $ HE.input_ $ ClearSavedGames
+              ]  [HH.text "Delete Stats"]
+          ]
         ]
       eval :: Query ~> H.ComponentDSL State Query Message (Aff (dom :: DOM | e))
       eval (HandleInput n next) = do

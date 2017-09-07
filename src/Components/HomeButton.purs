@@ -7,7 +7,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
-homeButton :: forall a. H.ComponentHTML a
+homeButton :: forall a b. HH.HTML a b
 homeButton = HH.a 
   [ HP.classes [HH.ClassName "ui labeled icon button"]
   , HP.href "#/"
