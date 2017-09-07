@@ -75,7 +75,6 @@ ui =  H.parentComponent
             ]
             [ HH.text "Save"]
           ]
-
     eval :: Query ~> H.ParentDSL State Query Round.Query Slot Message (Aff (now :: NOW, dom :: DOM | e))
     eval (HandleRound i (Round.RoundChange r) next) = do
       state <- H.get
@@ -84,7 +83,7 @@ ui =  H.parentComponent
     eval (Save next) = do
         state <- H.get
         d <- liftEff nowDateTime
-        let gs = GameSave {playedOn:d, game:initialGame}
+        let gs = {playedOn:d, game:state}
         liftEff $ saveGame gs
         H.raise $ GameSaved gs
         pure next

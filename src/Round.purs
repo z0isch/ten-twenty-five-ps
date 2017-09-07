@@ -32,7 +32,7 @@ ui r =
         }
     where
         render :: State -> H.ComponentHTML Query
-        render (Round r') = HH.div
+        render r' = HH.div
             [HP.classes [HH.ClassName "row"]]
             (distanceCol:snoc tossCols scoreCol)  
             where
@@ -42,7 +42,7 @@ ui r =
                 tossCols = map toss (zip (0..length r'.results) r'.results)
                 scoreCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound (Round r')]]
+                    [HH.h1 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound r']]
         toss (Tuple i b) = HH.div
             [ HP.classes [HH.ClassName "column"]]
             [ HH.input 
@@ -55,9 +55,9 @@ ui r =
 
         eval :: Query ~> H.ComponentDSL State Query Message m
         eval (Toggle i next) = do
-            (Round r') <- H.get
+            r' <- H.get
             let newResults = over (ix i) not r'.results
-            let newRound = Round {results:newResults, distance: r'.distance}
+            let newRound = {results:newResults, distance: r'.distance}
             H.put newRound
             H.raise $ RoundChange newRound
             pure next

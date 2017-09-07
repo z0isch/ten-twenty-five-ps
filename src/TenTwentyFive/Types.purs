@@ -2,80 +2,65 @@ module TenTwentyFive.Types where
 
 import Prelude
 
-import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Core (foldJsonArray, toArray)
+import Data.Argonaut.Decode (class DecodeJson, decodeJson)
 import Data.Argonaut.Decode.Generic (gDecodeJson)
 import Data.Argonaut.Encode (class EncodeJson)
 import Data.Argonaut.Encode.Generic (gEncodeJson)
-import Data.Array (head, last, length, replicate)
+import Data.Argonaut.Parser (jsonParser)
+import Data.Array (concat, filter, groupBy, head, last, length, replicate, (:))
 import Data.DateTime.Locale (LocalDateTime)
+import Data.Either (either)
 import Data.Foldable (and, sum)
 import Data.Generic (class Generic, gShow)
+import Data.Int (toNumber)
 import Data.Lens (Fold)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, maybe)
+import Data.NonEmpty (NonEmpty(..))
+import Data.NonEmpty as NE
+import Data.Tuple (Tuple(..))
+import Math.Statistics.Unsafe (maximum, mean)
 
 type Distance = Int
 
-newtype Round = Round { results :: Array Boolean, distance :: Distance }
-derive instance genericRound :: Generic Round
-instance showRound :: Show Round where
-  show = gShow
-instance encodeJsonRound :: EncodeJson Round where
-  encodeJson = gEncodeJson
-instance decodeJsonRound :: DecodeJson Round where
-  decodeJson = gDecodeJson
+type Round = { results :: Array Boolean, distance :: Distance }
 
 type Game = Array Round
 
-newtype GameSave = GameSave {playedOn :: LocalDateTime , game :: Game}
-derive instance genericGameSave :: Generic GameSave
-instance showGameSave :: Show GameSave where
-  show = gShow
-instance encodeJsonGameSave :: EncodeJson GameSave where
-  encodeJson = gEncodeJson
-instance decodeJsonGameSave :: DecodeJson GameSave where
-  decodeJson = gDecodeJson
+type GameSave = {playedOn :: LocalDateTime , game :: Game}
 
-data RoundPercent = RoundPercent Number Distance
-derive instance genericRoundPercent :: Generic RoundPercent
-instance showRoundPercent :: Show RoundPercent where
-  show = gShow
+averageRoundPercents :: (Array GameSave) -> Array {distance:: Distance, average:: Number}
+averageRoundPercents gs = map mkPoint grouped
+  where rounds = concat $ map (\{game:g} -> g) gs
+        grouped = groupBy (\{distance:a} {distance:b} -> a == b) rounds
+        totalRoundShots = sum <<< map (toNumber <<< roundLength) <<< NE.fromNonEmpty (\a fa -> a : fa)
+        roundAvg = sum <<< map (toNumber <<< madeBaskets) <<< NE.fromNonEmpty (\a fa -> a : fa)
+        mkPoint g = {distance: (NE.head g).distance, average: roundAvg g / (totalRoundShots g)}
 
-data RoundMake = RoundMake
-  { makes :: Int
-  , attempts :: Int
-  , distance :: Distance }
-derive instance genericRoundMake :: Generic RoundMake
-instance showRoundMake :: Show RoundMake where
-  show = gShow
+madeBaskets :: Round -> Int
+madeBaskets ({results:r}) = length $ filter ((==) true) r
+roundLength :: Round -> Int
+roundLength {results:r} = length r
 
--- getRoundMake :: Round -> RoundMake
--- getRoundMake r@(Round br d) = RoundMake (getMadeBaskets r) (length br) d
+scores :: (Array GameSave) -> (Array Number)
+scores = map (\{game:g} -> toNumber $ scoreGame g)
 
--- getRoundMakes :: GameSave -> (Array RoundMake)
--- getRoundMakes (GameSave _ rs) = map getRoundMake rs
+highestScore :: (Array GameSave) -> Number
+highestScore [] = 0.0
+highestScore gs = maximum $ scores gs
 
--- getAvgRoundPercents :: (Array GameSave) -> (Array RoundPercent)
--- getAvgRoundPercents gs = map avgRPercents $ L.transpose rMakes
---   where rMakes = map getRoundMakes gs
---         avgRPercents :: (Array RoundMake) -> RoundPercent
---         avgRPercents rms = RoundPercent (100 * (sum $ map akes rms) / fromIntegral (sum $ map roundMakeAttempts rms)) $ roundMakeDistance $ head rms
-
--- bestScore :: (Array GameSave) -> Int
--- bestScore [] = 0
--- bestScore gs = maximum $ map (\(GameSave _ g) -> scoreGame g) gs
-
--- averageScore :: (Array GameSave) -> Number
--- averageScore gs = average scores
---   where scores = map (\_{results:g} -> scoreGame g) gs
+averageScore :: (Array GameSave) -> Number
+averageScore [] = 0.0
+averageScore gs = mean $ scores gs
 
 initialGame :: Game
 initialGame = [
-    Round { results: replicate 6 false, distance: 10},
-    Round { results: replicate 6 false, distance: 15},
-    Round { results: replicate 6 false, distance: 20},
-    Round { results: replicate 6 false, distance: 25},
-    Round { results: replicate 6 false, distance: 30},
-    Round { results: replicate 6 false, distance: 35}
+    { results: replicate 6 false, distance: 10},
+    { results: replicate 6 false, distance: 15},
+    { results: replicate 6 false, distance: 20},
+    { results: replicate 6 false, distance: 25},
+    { results: replicate 6 false, distance: 30},
+    { results: replicate 6 false, distance: 35}
 ]
 
 scoreGame :: Game -> Int
@@ -85,7 +70,7 @@ scoreRound :: Round -> Int
 scoreRound r = madeShotScore r + madeAllScore r + madeFirstLastScore r
 
 madeFirstLastScore :: Round -> Int
-madeFirstLastScore (Round r) = madeScore head + madeScore last
+madeFirstLastScore r = madeScore head + madeScore last
   where
     madeScore f = multiplier * boolToInt (fromMaybe false (f r.results))
     multiplier
@@ -93,15 +78,31 @@ madeFirstLastScore (Round r) = madeScore head + madeScore last
       | otherwise = 10
 
 madeAllScore :: Round -> Int
-madeAllScore (Round r) = r.distance * boolToInt (and r.results)
+madeAllScore r = r.distance * boolToInt (and r.results)
 
 boolToInt :: Boolean -> Int
 boolToInt true = 1
 boolToInt _ = 0
 
 madeShotScore :: Round -> Int
-madeShotScore (Round r) = r.distance * getMadeBaskets (Round r)
+madeShotScore r = r.distance * getMadeBaskets r
 
 getMadeBaskets :: Round -> Int
-getMadeBaskets (Round r) = sum $ map boolToInt r.results
+getMadeBaskets r = sum $ map boolToInt r.results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

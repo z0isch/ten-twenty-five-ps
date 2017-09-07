@@ -13,7 +13,9 @@
     "purescript-argonaut-core": "*",
     "purescript-argonaut-generic": "*",
     "purescript-var": "*",
-    "purescript-aff-coroutines": "*"
+    "purescript-aff-coroutines": "*",
+    "purescript-statistics": "*",
+    "purescript-numbers": "*"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"
