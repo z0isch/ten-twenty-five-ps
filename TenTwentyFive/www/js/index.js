@@ -7313,7 +7313,9 @@ var PS = {};
   var element = Unsafe_Coerce.unsafeCoerce(Halogen_HTML_Core.element(Data_Maybe.Nothing.value));
   var h1 = element("h1");
   var h2 = element("h2");
-  var h2_ = h2([  ]);    
+  var h2_ = h2([  ]);
+  var h3 = element("h3");
+  var h3_ = h3([  ]);    
   var i = element("i");
   var input = function (props) {
       return element("input")(props)([  ]);
@@ -7340,6 +7342,8 @@ var PS = {};
   exports["h1"] = h1;
   exports["h2"] = h2;
   exports["h2_"] = h2_;
+  exports["h3"] = h3;
+  exports["h3_"] = h3_;
   exports["i"] = i;
   exports["input"] = input;
   exports["p"] = p;
@@ -11744,7 +11748,7 @@ var PS = {};
   var Prelude = PS["Prelude"];
   var ui = (function () {
       var render = function (v) {
-          return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.h1([ Halogen_HTML_Properties.classes([ "ui centered header" ]) ])([ Halogen_HTML_Core.text("1025") ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui primary fluid button" ]), Halogen_HTML_Properties.href("#/playGame") ])([ Halogen_HTML_Core.text("New Game") ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui green fluid button" ]), Halogen_HTML_Properties.href("#/stats") ])([ Halogen_HTML_Core.text("Stats") ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui violet fluid button" ]), Halogen_HTML_Properties.href("#/about") ])([ Halogen_HTML_Core.text("About") ]) ]);
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "ui container" ]) ])([ Halogen_HTML_Elements.h1([ Halogen_HTML_Properties.classes([ "ui huge centered header" ]) ])([ Halogen_HTML_Core.text("1025") ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "ui divider" ]) ])([  ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui primary fluid button" ]), Halogen_HTML_Properties.href("#/playGame") ])([ Halogen_HTML_Core.text("New Game") ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui green fluid button" ]), Halogen_HTML_Properties.href("#/stats") ])([ Halogen_HTML_Core.text("Stats") ]), Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes([ "ui violet fluid button" ]), Halogen_HTML_Properties.href("#/about") ])([ Halogen_HTML_Core.text("About") ]) ]);
       };
       var $$eval = function (v) {
           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
@@ -11813,7 +11817,7 @@ var PS = {};
       };
       var render = function (v) {
           var tossCols = Data_Functor.map(Data_Functor.functorArray)(toss)(Data_Array.zip(Data_Array.range(0)(Data_Array.length(v.value0.results)))(v.value0.results));
-          var scoreCol = Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "column" ]) ])([ Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.classes([ "stat" ]) ])([ Halogen_HTML_Core.text(Data_Show.show(Data_Show.showInt)(TenTwentyFive_Types.scoreRound(new TenTwentyFive_Types.Round(v.value0)))) ]) ]);
+          var scoreCol = Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "column" ]) ])([ Halogen_HTML_Elements.h3_([ Halogen_HTML_Core.text(Data_Show.show(Data_Show.showInt)(TenTwentyFive_Types.scoreRound(new TenTwentyFive_Types.Round(v.value0)))) ]) ]);
           var distanceCol = Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "column" ]) ])([ Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.classes([ "stat" ]) ])([ Halogen_HTML_Core.text(Data_Show.show(Data_Show.showInt)(v.value0.distance) + "'") ]) ]);
           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "row" ]) ])(Data_Array.cons(distanceCol)(Data_Array.snoc(tossCols)(scoreCol)));
       };
