@@ -7,8 +7,7 @@ import Control.Monad.Aff (Aff)
 import DOM (DOM)
 import DOM.WebStorage.Game (deleteSavedGames)
 import Data.Array (length)
-import Data.Int (ceil, floor)
-import Data.Number.Format (fixed, toStringWith)
+import Data.Int (round)
 import Halogen (liftEff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -43,8 +42,8 @@ ui =  H.component
             [ HP.classes [HH.ClassName "ui centered header"] ]
             [HH.text "Stats"]
           , stat "small" (show $ length gs) "Games Played"
-          , stat "small" (show $ averageScore gs) "Avg Score"
-          , stat "small" (show $ highestScore gs) "Highest Score"
+          , stat "small" (show $ round $ averageScore gs) "Avg Score"
+          , stat "small" (show $ round $ highestScore gs) "Highest Score"
           , HH.div [HP.classes [HH.ClassName "ui divider"]] []
           , HH.div_ $ map (\{distance:d, average:a} -> stat "tiny" (percent a) (show d <> "'") ) $ averageRoundPercents gs
           , HH.button
@@ -53,7 +52,7 @@ ui =  H.component
               ]  [HH.text "Delete Stats"]
           ]
         ]
-      percent a = toStringWith (fixed 0) (a * 100.0) <> "%"
+      percent a = (show $ round $ a * 100.0) <> "%"
       stat t v l =  HH.div
         [ HP.classes [HH.ClassName $ "ui "<> t <>" statistic"]]
         [ HH.div
@@ -70,6 +69,7 @@ ui =  H.component
       eval (ClearSavedGames next) = do
         liftEff $ deleteSavedGames
         pure next
+
 
 
 

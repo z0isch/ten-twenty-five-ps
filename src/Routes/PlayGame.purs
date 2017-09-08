@@ -77,7 +77,7 @@ ui =  H.parentComponent
     eval (Save next) = do
         state <- H.get
         d <- liftEff nowDateTime
-        let gs = {playedOn:d, game:state}
+        let gs = GameSave {playedOn:d, game:state}
         liftEff $ saveGame gs
         H.raise $ GameSaved gs
         pure next
