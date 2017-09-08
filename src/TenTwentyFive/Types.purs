@@ -38,7 +38,7 @@ instance showGameSave :: Show GameSave where
 averageRoundPercents :: (Array GameSave) -> Array {distance:: Distance, average:: Number}
 averageRoundPercents gs = map mkPoint $ grouped gs
   where
-        mkPoint g = {distance: getDistance (NE.head g), average: roundAvg g / (totalRoundShots g)}
+        mkPoint g = {distance: getDistance (NE.head g), average: roundAvg g / totalRoundShots g}
         totalRoundShots = sumIt (\(Round r) -> length r.results)
         roundAvg = sumIt (\(Round r) -> length $ filter ((==) true) r.results)
         sumIt f =  sum <<< map (toNumber <<< f) <<< NE.fromNonEmpty (\a fa -> a : fa)
@@ -47,12 +47,9 @@ getDistance :: Round -> Int
 getDistance (Round r) = r.distance
 
 grouped :: Array GameSave -> Array (NonEmpty Array Round)
-grouped = groupBy equalRs <<< sortWith getDistance <<< rounds
+grouped = groupBy equalRs <<< sortWith getDistance <<< concatMap (\(GameSave g) -> g.game)
   where
     equalRs (Round r1) (Round r2) = r1.distance == r2.distance 
-
-rounds :: Array GameSave -> Array Round
-rounds = concatMap (\(GameSave g) -> g.game)
 
 scores :: (Array GameSave) -> (Array Number)
 scores = map (\(GameSave {playedOn:_ , game : g}) -> toNumber $ scoreGame g)
