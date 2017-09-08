@@ -2,12 +2,12 @@
     "name": "com.example.tentwentyfive",
     "displayName": "TenTwentyFive",
     "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "description": "1025 putting game",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Apache Cordova Team",
+    "author": "AJ",
     "license": "Apache-2.0",
     "dependencies": {
         "cordova-android": "^6.2.3",

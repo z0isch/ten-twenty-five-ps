@@ -6,10 +6,10 @@
     </feature>
     <name>TenTwentyFive</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        1025 putting game
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="z0isch@gmail.com" href="">
+       AJ
     </author>
     <content src="index.html" />
     <access origin="*" />

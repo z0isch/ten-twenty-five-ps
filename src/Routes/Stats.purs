@@ -45,13 +45,35 @@ ui =  H.component
           , stat "small" (show $ round $ averageScore gs) "Avg Score"
           , stat "small" (show $ round $ highestScore gs) "Highest Score"
           , HH.div [HP.classes [HH.ClassName "ui divider"]] []
-          , HH.div_ $ map (\{distance:d, average:a} -> stat "tiny" (percent a) (show d <> "'") ) $ averageRoundPercents gs
+          , HH.div_ [ roundPercentTable $ averageRoundPercents gs ]
           , HH.button
               [ HP.classes [HH.ClassName "ui red fluid button"]
               , HE.onClick $ HE.input_ $ ClearSavedGames
               ]  [HH.text "Delete Stats"]
           ]
         ]
+      roundPercentTable rps = HH.table
+        [ HP.classes [HH.ClassName "ui very basic celled table"]]
+        [ HH.thead_ 
+          [ HH.tr_
+              [ HH.td [HP.classes 
+                [ HH.ClassName "collapsing"]] 
+                [HH.text "Distance"]
+              , HH.td [HP.classes 
+                [ HH.ClassName "collapsing"]] 
+                [HH.text "Make %"]
+              ]
+          ]
+          , HH.tbody_ $ map roundPercentRow rps
+        ]
+      roundPercentRow {distance:d, average:a} = HH.tr_ 
+        [ HH.td 
+          [HP.classes [ HH.ClassName "collapsing"]]
+          [HH.text $ show d <> "'"]
+        , HH.td 
+            [HP.classes [ HH.ClassName "collapsing"]] 
+            [HH.text $ percent a]
+        ] 
       percent a = (show $ round $ a * 100.0) <> "%"
       stat t v l =  HH.div
         [ HP.classes [HH.ClassName $ "ui "<> t <>" statistic"]]

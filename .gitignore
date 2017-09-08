@@ -18,7 +18,7 @@ node_modules/
 
 # android
 /TenTwentyFive/platforms/android/assets/wwwA
-/TenTwentyFive//TenTwentyFive/platforms/android/assets/www
+/TenTwentyFive/platforms/android/assets/www
 /TenTwentyFive/platforms/android/bin
 /TenTwentyFive/platforms/android/gen
 /TenTwentyFive/platforms/android/local.properties

@@ -42,7 +42,7 @@ ui r =
                 tossCols = map toss (zip (0..length r'.results) r'.results)
                 scoreCol = HH.div 
                     [HP.classes [HH.ClassName "column"]] 
-                    [HH.h2 [HP.classes [HH.ClassName "stat"]] [HH.text $ show $ scoreRound (Round r')]]
+                    [HH.h3_ [HH.text $ show $ scoreRound (Round r')]]
         toss (Tuple i b) = HH.div
             [ HP.classes [HH.ClassName "column"]]
             [ HH.input 

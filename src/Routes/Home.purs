@@ -25,10 +25,14 @@ ui =  H.component
         }
     where
       render :: State -> H.ComponentHTML Query
-      render _ =  HH.div_ 
+      render _ = HH.div
+        [ HP.classes [HH.ClassName "ui container"]]
         [ HH.h1
-          [ HP.classes [HH.ClassName "ui centered header"] ]
-          [ HH.text "1025"]
+            [ HP.classes [HH.ClassName "ui huge centered header"] ]
+            [ HH.text "1025"]
+        , HH.div
+            [ HP.classes [HH.ClassName "ui divider"] ]
+            []
         , HH.a 
             [ HP.classes [HH.ClassName "ui primary fluid button"]
             , HP.href "#/playGame"
