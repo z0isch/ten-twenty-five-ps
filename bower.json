@@ -15,7 +15,8 @@
     "purescript-var": "*",
     "purescript-aff-coroutines": "*",
     "purescript-statistics": "*",
-    "purescript-numbers": "*"
+    "purescript-numbers": "*",
+    "purescript-uuid": "*"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"

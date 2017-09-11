@@ -11,6 +11,7 @@ import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
 import Control.Monad.Eff.Now (NOW)
+import Control.Monad.Eff.Unsafe (unsafePerformEff)
 import Control.Monad.Error.Class (throwError)
 import DOM (DOM)
 import DOM.HTML (window)
@@ -24,6 +25,7 @@ import DOM.Node.ParentNode (QuerySelector(..))
 import DOM.Node.Types (Element, ElementId(..), Node, elementToNode)
 import DOM.WebStorage.Game (savedGamesProducer)
 import Data.Maybe (Maybe(..), maybe)
+import Data.UUID (GENUUID, genUUID)
 import Halogen.Aff (HalogenEffects, awaitBody, awaitLoad, runHalogenAff, selectElement)
 import Halogen.VDom.Driver (runUI)
 import Page (Message(..))
@@ -31,7 +33,7 @@ import Page as P
 import Routes as R
 import Routing.Hash (setHash)
 
-makeWrapper :: forall e. Eff (dom :: DOM | e) (Maybe ElementId)     
+makeWrapper :: forall e. Eff (dom :: DOM, uuid :: GENUUID | e) (Maybe ElementId)     
 makeWrapper = do
   htmlDoc <- window >>= document
   let doc = htmlDocumentToDocument htmlDoc
@@ -46,15 +48,18 @@ makeWrapper = do
         Nothing -> pure Nothing
         (Just parEl) -> do
           wrapper <- createElement "div" doc 
-          setId (ElementId "test") wrapper
+          uuid <- genUUID
+          let divId = "a" <> show uuid
+          setId (ElementId divId) wrapper
           _ <- insertBefore (elementToNode wrapper) currScript (elementToNode parEl)
-          pure (Just $ ElementId "test")
+          pure (Just $ ElementId divId)
 
-main :: Eff (HalogenEffects (now :: NOW, dom :: DOM, console :: CONSOLE)) Unit
+
+main :: Eff (HalogenEffects (now :: NOW, dom :: DOM, console :: CONSOLE, uuid :: GENUUID )) Unit
 main = runHalogenAff do
   mWrapId <- liftEff makeWrapper
-  wrapId <- maybe (throwError (error "Couldn't make wrapper")) pure mWrapId
-  mWrap <- selectElement (QuerySelector "#test")
+  (ElementId wrapId) <- maybe (throwError (error "Couldn't make wrapper")) pure mWrapId
+  mWrap <- selectElement (QuerySelector $ "#"<> wrapId)
   wrap <- maybe (throwError (error "Couldn't find wrapper")) pure mWrap
   app <- runUI P.ui unit wrap
   _ <- forkAff $ runProcess (R.routeProducer $$ P.routeConsumer app.query)
@@ -67,6 +72,7 @@ pageMsgConsumer = consumer \event -> do
     RouteTo s -> do
       liftEff $ setHash s
       pure Nothing
+
 
 
 
